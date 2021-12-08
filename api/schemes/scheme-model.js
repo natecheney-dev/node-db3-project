@@ -35,21 +35,26 @@ async function findById(scheme_id) { // EXERCISE B
     .where('sc.scheme_id', scheme_id)
     .orderBy('st.step_number', 'asc')
 
-  const result = { schemes: [] }
-  result.scheme_id = rows[0].scheme_id,
-    result.scheme_name = rows[0].scheme_name,
-    result.steps = []
-
-  rows.forEach(row => {
-    if (row.step_id) {
+  const result = { 
+    scheme_id: rows[0].scheme_id,
+    scheme_name: rows[0].scheme_name,
+    steps: [] 
+  }
+  
+  rows.forEach(data => {
+    if (data.step_id ){
       result.steps.push({
-        step_id: row.step_id,
-        step_number: row.step_number,
-        instructions: row.instructions
+        step_id: data.step_id,
+        step_number: data.step_number,
+        instructions: data.instructions
       })
-    }
-  })
+  }
+})
   return result
+    
+    
+
+  
 
 
   /*
@@ -173,7 +178,9 @@ async function addStep(scheme_id, step) { // EXERCISE E
     and resolves to _all the steps_ belonging to the given `scheme_id`,
     including the newly created one.
   */
-  
+    const { instructions, step_number } = step
+    await db('steps').insert({scheme_id, instructions, step_number})
+    return findSteps(scheme_id)
 }
 
 module.exports = {
