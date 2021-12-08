@@ -35,6 +35,21 @@ async function findById(scheme_id) { // EXERCISE B
     .where('sc.scheme_id', scheme_id)
     .orderBy('st.step_number', 'asc')
 
+  const result = { schemes: [] }
+  result.scheme_id = rows[0].scheme_id,
+    result.scheme_name = rows[0].scheme_name,
+    result.steps = []
+
+  rows.forEach(row => {
+    if (row.step_id) {
+      result.steps.push({
+        step_id: row.step_id,
+        step_number: row.step_number,
+        instructions: row.instructions
+      })
+    }
+  })
+  return result
 
 
   /*
